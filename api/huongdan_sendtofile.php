@@ -65,7 +65,7 @@
   <p>Chuyển file từ điện thoại lên Tivi/Box nhanh chóng qua cùng mạng WiFi</p>
 </div>
 
-<a class="back-btn" href="">← Quay lại kho app</a>
+<a class="back-btn" href="/">← Quay lại kho app</a>
 
 <div class="content">
 
