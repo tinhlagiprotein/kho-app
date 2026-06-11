@@ -1,5 +1,5 @@
 <?php
-$page_title = "TINHLAGI.PRO - Kho Ứng Dụng ATV";
+$page_title = "TINHLAGI APP - Kho Ứng Dụng ATV";
 $page_sub   = "Tổng hợp phần mềm cho Tivi/Box";
 
 // Đã thêm trường 'link' riêng biệt cho từng ứng dụng
@@ -262,8 +262,8 @@ $categories = [
 <div class="code-row">
 
 <a target="_blank" href="https://go.aftvnews.com/">🌐 Web tạo CODE cài APP</a>
-  <a href="https://tinhlagi.pro/app/huongdan_code.php">📋 Hướng dẫn lấy CODE để cài APP</a>
-    <a href="https://tinhlagi.pro/app/huongdan_sendtofile.php">📋 Hướng dẫn Send to File</a>
+<a href="/huongdan_code.php">📋 Hướng dẫn lấy CODE để cài APP</a>
+<a href="/huongdan_sendtofile.php">📋 Hướng dẫn Send to File</a>
 
 </div>
 <div class="search-wrap">
