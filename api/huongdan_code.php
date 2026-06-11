@@ -76,7 +76,7 @@
   <p>Không cần USB, không cần link, không cần máy tính — chỉ cần nhập mã số vào Tivi/Box</p>
 </div>
 
-<a class="back-btn" href="">← Quay lại kho app</a>
+<a class="back-btn" href="/">← Quay lại kho app</a>
 
 <div class="content">
 
