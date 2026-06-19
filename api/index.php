@@ -1,5 +1,5 @@
 <?php
-$page_title = "TINHLAGI APP - Kho Ứng Dụng ATV";
+$page_title = "TINHLAGI.PRO - Kho Ứng Dụng ATV";
 $page_sub   = "Tổng hợp phần mềm cho Tivi/Box";
 
 // Đã thêm trường 'link' riêng biệt cho từng ứng dụng
@@ -85,6 +85,7 @@ $categories = [
         'icon'  => '🛠️',
         'title' => 'CÔNG CỤ & TOOLS',
         'apps'  => [
+				            ['abbr'=>'HD','color'=>'indigo', 'name'=>'Movie Legend Store',                  'ver'=>'v3.1.5', 'tag'=>'Miễn phí', 'sub'=>'Movie Legend Store',         'code'=>'5564510', 'link'=>$r2.'Movie Legend Store.apk'],
 		            ['abbr'=>'HD','color'=>'indigo', 'name'=>'HDPlay_Store_3.1.5',                  'ver'=>'v3.1.5', 'tag'=>'Miễn phí', 'sub'=>'HDPlay Store – kho app cho TV/Box',         'code'=>'393939', 'link'=>$r2.'HDPlay_Store_3.1.5.apk'],
 		           ['abbr'=>'CC','color'=>'teal',   'name'=>'Coc_Coc_Lite_1.6',                    'ver'=>'v1.6',   'tag'=>'Miễn phí', 'sub'=>'Cốc Cốc Lite – trình duyệt TV',            'code'=>'393939', 'link'=>$r2.'Coc_Coc_Lite_1.6.apk'],
             ['abbr'=>'AU','color'=>'orange', 'name'=>'Autostart+v4.1.1_Modded_',            'ver'=>'v4.1.1', 'tag'=>'MOD',      'sub'=>'Autostart – khởi động app tự động',       'code'=>'393939', 'link'=>$r2.'Autostart%2Bv4.1.1_Modded_.apk'],
@@ -262,8 +263,8 @@ $categories = [
 <div class="code-row">
 
 <a target="_blank" href="https://go.aftvnews.com/">🌐 Web tạo CODE cài APP</a>
-<a href="/huongdan_code.php">📋 Hướng dẫn lấy CODE để cài APP</a>
-<a href="/huongdan_sendtofile.php">📋 Hướng dẫn Send to File</a>
+  <a href="https://tinhlagi.pro/app/huongdan_code.php">📋 Hướng dẫn lấy CODE để cài APP</a>
+    <a href="https://tinhlagi.pro/app/huongdan_sendtofile.php">📋 Hướng dẫn Send to File</a>
 
 </div>
 <div class="search-wrap">
