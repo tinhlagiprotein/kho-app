@@ -10,7 +10,8 @@ $categories = [
         'icon'  => '📺',
         'title' => 'TRUYỀN HÌNH - ⚽ ĐÁ BANH',
         'apps'  => [
-		    ['abbr'=>'GE','color'=>'gold',  'name'=>'GetOut',  'ver'=>'v1.0.9', 'tag'=>'Miễn phí', 'sub'=>'Ứng dụng xem bóng đá miễn phí',  'code'=>'5761331', 'link'=>$r2.'Get_Out_1.0.9.apk'],
+		    ['abbr'=>'GE','color'=>'gold',  'name'=>'GetOut',  'ver'=>'v2.0', 'tag'=>'Miễn phí', 'sub'=>'Ứng dụng xem bóng đá miễn phí',  'code'=>'3074016', 'link'=>$r2.'Get_Out_2.0.apk
+'],
 			['abbr'=>'SP','color'=>'green',  'name'=>'SportsTV_5.2.3.apk',   'ver'=>'v5.2.3',    'tag'=>'Miễn phí', 'sub'=>'SportsTV – xem thể thao IPTV',     'code'=>'8773122', 'link'=>$r2.'SportsTV_5.2.3.apk'],
             ['abbr'=>'SP','color'=>'green', 'name'=>'SportzX_2.1v','ver'=>'v2.1',   'tag'=>'Miễn phí', 'sub'=>'SportzX – xem thể thao trực tiếp', 'code'=>'4652958', 'link'=>$r2.'SportzX_2.1v.apk'],
             ['abbr'=>'CO','color'=>'teal',   'name'=>'CoTiViV1.1.7',         'ver'=>'v1.1.7',    'tag'=>'Miễn phí', 'sub'=>'Ứng dụng xem truyền hình cáp',        'code'=>'3897591', 'link'=>$r2.'Co_Tivi_1.1.7.apk'],
