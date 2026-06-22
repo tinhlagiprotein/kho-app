@@ -1,5 +1,5 @@
 <?php
-$page_title = "TINHLAGI.PRO - Kho Ứng Dụng ATV";
+$page_title = "TINHLAGI - Kho Ứng Dụng ATV";
 $page_sub   = "Tổng hợp phần mềm cho Tivi/Box";
 
 // Đã thêm trường 'link' riêng biệt cho từng ứng dụng
