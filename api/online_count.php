@@ -27,7 +27,8 @@ function upstash($url, $token, array $cmd) {
 
 $sid = 'ol:' . substr(md5(getUserIP() . ($_SERVER['HTTP_USER_AGENT'] ?? '')), 0, 16);
 
-upstash($url, $token, ['SET', $sid, '1', 'EX', (string)$timeout]);
+upstash($url, $token, ['SETEX', $sid, (string)$timeout, '1']);
+
 
 $keys  = upstash($url, $token, ['KEYS', 'ol:*']);
 $count = isset($keys['result']) ? count($keys['result']) : 1;
