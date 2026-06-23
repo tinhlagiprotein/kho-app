@@ -23,9 +23,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/sw.js",        "destination": "/api/sw.js" },
-    { "source": "/manifest.json","destination": "/api/manifest.json" },
-    { "source": "/",             "destination": "/api/index.php" },
-    { "source": "/(.*)",         "destination": "/api/$1" }
+    { "source": "/",      "destination": "/api/index.php" },
+    { "source": "/(.*)", "destination": "/api/$1" }
   ]
 }
