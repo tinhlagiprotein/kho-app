@@ -16,16 +16,16 @@
     {
       "source": "/manifest.json",
       "headers": [
-        { "key": "Content-Type",               "value": "application/manifest+json" },
-        { "key": "Cache-Control",              "value": "public, max-age=86400" },
-        { "key": "Access-Control-Allow-Origin","value": "*" }
+        { "key": "Content-Type",                "value": "application/manifest+json" },
+        { "key": "Cache-Control",               "value": "public, max-age=86400" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     }
   ],
-  "routes": [
-    { "src": "/sw.js",        "dest": "/api/sw.js" },
-    { "src": "/manifest.json","dest": "/api/manifest.json" },
-    { "src": "/",             "dest": "/api/index.php" },
-    { "src": "/(.*)",         "dest": "/api/$1" }
+  "rewrites": [
+    { "source": "/sw.js",        "destination": "/api/sw.js" },
+    { "source": "/manifest.json","destination": "/api/manifest.json" },
+    { "source": "/",             "destination": "/api/index.php" },
+    { "source": "/(.*)",         "destination": "/api/$1" }
   ]
 }
