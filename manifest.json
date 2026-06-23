@@ -1,11 +1,11 @@
 {
   "name": "TINHLAGI - Kho Ứng Dụng ATV",
-  "short_name": "TINHLAGI",
+  "short_name": "TLG APP ATV",
   "description": "Tổng hợp phần mềm cho Tivi/Box Android",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f0f2f7",
+  "background_color": "#0d0d1a",
   "theme_color": "#1a73e8",
   "orientation": "portrait-primary",
   "icons": [
@@ -13,13 +13,13 @@
       "src": "/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "categories": ["entertainment", "utilities"],
