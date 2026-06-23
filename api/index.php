@@ -1,6 +1,6 @@
 <?php
 $page_title = "TINHLAGI - Kho Ứng Dụng ATV";
-$page_sub   = "Tổng hợp phần mềm cho Tivi/Box";
+$page_sub   = "Tổng hợp phần mềm cho Tivi/Box/Mobile";
 
 // Đã thêm trường 'link' riêng biệt cho từng ứng dụng
 $r2 = 'https://pub-fb13fe1daa2c4cf0acf3075c535924da.r2.dev/app/';
@@ -105,6 +105,13 @@ $categories = [
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= htmlspecialchars($page_title) ?></title>
+<meta name="theme-color" content="#1a73e8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TINHLAGI">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="https://tinhlagi.pro/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -252,6 +259,44 @@ $categories = [
   .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9px; font-weight: 700; letter-spacing: 0.4px; color: var(--text-secondary); cursor: pointer; padding: 4px 10px; border-radius: 12px; transition: color 0.2s; }
   .nav-item.active { color: var(--blue); }
   .nav-icon { font-size: 19px; }
+
+  /* ── PWA INSTALL BANNER ── */
+  .pwa-banner {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 1px solid #e4e7ef;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.13);
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px 20px;
+    z-index: 999;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .pwa-banner.show { transform: translateY(0); }
+  .pwa-banner-icon {
+    width: 48px; height: 48px; min-width: 48px; border-radius: 12px;
+    background: linear-gradient(135deg, #1a73e8 0%, #1e3a8a 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; box-shadow: 0 2px 8px rgba(26,115,232,0.3);
+  }
+  .pwa-banner-text { flex: 1; min-width: 0; }
+  .pwa-banner-title { font-size: 14px; font-weight: 800; color: #1a1d2e; line-height: 1.3; }
+  .pwa-banner-sub { font-size: 12px; color: #6b7280; font-weight: 500; margin-top: 2px; }
+  .pwa-banner-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+  .pwa-btn-skip {
+    background: #f3f4f6; color: #6b7280; border: 1.5px solid #e4e7ef;
+    border-radius: 10px; padding: 8px 14px; font-size: 12px; font-weight: 700;
+    font-family: var(--font); cursor: pointer; white-space: nowrap; transition: background 0.15s;
+  }
+  .pwa-btn-skip:hover { background: #e5e7eb; }
+  .pwa-btn-install {
+    background: linear-gradient(135deg, #1a73e8, #1e3a8a);
+    color: #fff; border: none; border-radius: 10px;
+    padding: 8px 16px; font-size: 12px; font-weight: 800;
+    font-family: var(--font); cursor: pointer; white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(26,115,232,0.35); transition: opacity 0.15s;
+  }
+  .pwa-btn-install:hover { opacity: 0.88; }
 </style>
 </head>
 <body>
@@ -334,6 +379,62 @@ $categories = [
     </div>
   </div>
 </div>
+
+<!-- PWA Install Banner -->
+<div class="pwa-banner" id="pwaBanner">
+  <div class="pwa-banner-icon">📺</div>
+  <div class="pwa-banner-text">
+    <div class="pwa-banner-title">Cài app TINHLAGI</div>
+    <div class="pwa-banner-sub">Truy cập nhanh hơn, mượt hơn!</div>
+  </div>
+  <div class="pwa-banner-actions">
+    <button class="pwa-btn-skip" id="pwaDismiss">Bỏ qua</button>
+    <button class="pwa-btn-install" id="pwaInstall">Cài đặt</button>
+  </div>
+</div>
+
+<script>
+  // ── PWA: Register Service Worker ──
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
+
+  // ── PWA Install Banner logic ──
+  let deferredPrompt = null;
+  const banner  = document.getElementById('pwaBanner');
+  const btnInst = document.getElementById('pwaInstall');
+  const btnDism = document.getElementById('pwaDismiss');
+
+  // Chỉ ẩn nếu đã cài app rồi (standalone), còn bỏ qua thì lần sau vẫn hiện lại
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (!isStandalone) {
+      setTimeout(() => banner.classList.add('show'), 1200);
+    }
+  });
+
+  btnInst.addEventListener('click', async () => {
+    banner.classList.remove('show');
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt = null;
+    }
+  });
+
+  btnDism.addEventListener('click', () => {
+    banner.classList.remove('show');
+    // Không lưu gì cả → lần sau vào web vẫn hiện lại
+  });
+
+  // Nếu đã cài (standalone) → ẩn hẳn
+  if (isStandalone) {
+    banner.style.display = 'none';
+  }
+</script>
 
 <script>
   function toggleCode(btn) {
