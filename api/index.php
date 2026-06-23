@@ -406,9 +406,9 @@ $categories = [
 </div>
 
 <!-- Online Badge -->
-<div class="online-badge" id="onlineBadge">
+<div class="online-badge" id="websiteOnlineBadge" style="display:none;">
   <span class="online-dot"></span>
-  <span id="onlineCount">...</span> online
+  <span id="websiteOnlineText">...</span>
 </div>
 
 <!-- PWA Install Banner -->
@@ -423,27 +423,6 @@ $categories = [
     <button class="pwa-btn-install" id="pwaInstall">Cài đặt</button>
   </div>
 </div>
-
-<script>
-  // ── ONLINE COUNTER ──
-  const onlineBadge = document.getElementById('onlineBadge');
-  const onlineCount = document.getElementById('onlineCount');
-
-  async function pingOnline() {
-    try {
-      const res  = await fetch('/api/online.php');
-      const data = await res.json();
-      onlineCount.textContent = data.online;
-      onlineBadge.classList.add('show');
-    } catch(e) {
-      onlineCount.textContent = '1';
-      onlineBadge.classList.add('show');
-    }
-  }
-
-  pingOnline();
-  setInterval(pingOnline, 30000);
-</script>
 
 <script>
   // ── PWA: Register Service Worker ──
@@ -537,6 +516,55 @@ $categories = [
       card.style.display = visible ? '' : 'none';
     });
   }
+</script>
+<script>
+(function() {
+    function safeGet(k, d) { try { return localStorage.getItem(k) || d; } catch(e) { return d; } }
+    function safeSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+
+    function render(count) {
+        var el = document.getElementById('websiteOnlineBadge');
+        var tx = document.getElementById('websiteOnlineText');
+        if (el && tx && count != null) {
+            el.style.display = '';
+            el.classList.add('show');
+            tx.innerText = count + ' online';
+        }
+    }
+
+    function update() {
+        var now  = Date.now();
+        var last = parseInt(safeGet('last_online_ping', '0'), 10);
+        var cached = safeGet('website_online_count');
+        if (cached) render(cached);
+        if (now - last >= 30000) {
+            safeSet('last_online_ping', now.toString());
+            fetch('/api/online_count.php?t=' + now)
+                .then(function(r) { if (!r.ok) throw 0; return r.json(); })
+                .then(function(d) {
+                    if (d && d.count !== undefined) {
+                        safeSet('website_online_count', d.count.toString());
+                        render(d.count);
+                    }
+                })
+                .catch(function() { safeSet('last_online_ping', '0'); });
+        }
+    }
+
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'website_online_count') render(e.newValue);
+    });
+
+    function init() {
+        update();
+        if (window._oi) clearInterval(window._oi);
+        window._oi = setInterval(update, 10000);
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+    window.addEventListener('pageshow', init);
+})();
 </script>
 </body>
 </html>
