@@ -383,9 +383,9 @@ $categories = [
 
 <!-- PWA Install Banner -->
 <div class="pwa-banner" id="pwaBanner">
-  <div class="pwa-banner-icon">📺</div>
+  <div class="pwa-banner-icon">📲</div>
   <div class="pwa-banner-text">
-    <div class="pwa-banner-title">Cài app TINHLAGI</div>
+    <div class="pwa-banner-title">Cài App TINHLAGI</div>
     <div class="pwa-banner-sub">Truy cập nhanh hơn, mượt hơn!</div>
   </div>
   <div class="pwa-banner-actions">
