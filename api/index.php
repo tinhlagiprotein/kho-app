@@ -261,6 +261,30 @@ $categories = [
   .nav-item.active { color: var(--blue); }
   .nav-icon { font-size: 19px; }
 
+  /* ── ONLINE BADGE ── */
+  .online-badge {
+    position: fixed; bottom: 80px; right: 16px;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #fff; border-radius: 20px; padding: 7px 13px 7px 10px;
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font); font-size: 12px; font-weight: 700;
+    box-shadow: 0 4px 16px rgba(21,128,61,0.35);
+    z-index: 99; cursor: default; user-select: none;
+    opacity: 0; transform: scale(0.8) translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .online-badge.show { opacity: 1; transform: scale(1) translateY(0); }
+  .online-dot {
+    width: 8px; height: 8px; background: #86efac;
+    border-radius: 50%; flex-shrink: 0;
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.7); }
+  }
+  @media (min-width: 900px) { .online-badge { bottom: 24px; right: 24px; } }
+
   /* ── PWA INSTALL BANNER ── */
   .pwa-banner {
     position: fixed; bottom: 0; left: 0; right: 0;
@@ -381,6 +405,12 @@ $categories = [
   </div>
 </div>
 
+<!-- Online Badge -->
+<div class="online-badge" id="onlineBadge">
+  <span class="online-dot"></span>
+  <span id="onlineCount">...</span> online
+</div>
+
 <!-- PWA Install Banner -->
 <div class="pwa-banner" id="pwaBanner">
   <div class="pwa-banner-icon">📲</div>
@@ -393,6 +423,27 @@ $categories = [
     <button class="pwa-btn-install" id="pwaInstall">Cài đặt</button>
   </div>
 </div>
+
+<script>
+  // ── ONLINE COUNTER ──
+  const onlineBadge = document.getElementById('onlineBadge');
+  const onlineCount = document.getElementById('onlineCount');
+
+  async function pingOnline() {
+    try {
+      const res  = await fetch('/api/online.php');
+      const data = await res.json();
+      onlineCount.textContent = data.online;
+      onlineBadge.classList.add('show');
+    } catch(e) {
+      onlineCount.textContent = '1';
+      onlineBadge.classList.add('show');
+    }
+  }
+
+  pingOnline();
+  setInterval(pingOnline, 30000);
+</script>
 
 <script>
   // ── PWA: Register Service Worker ──
