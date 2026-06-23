@@ -110,7 +110,8 @@ $categories = [
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TINHLAGI">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/manifest.json?v=2">
+
 <link rel="apple-touch-icon" href="https://tinhlagi.pro/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -395,9 +396,10 @@ $categories = [
 
 <script>
   // ── PWA: Register Service Worker ──
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js?v=2').catch(() => {});
   }
+
 
   // ── PWA Install Banner logic ──
   let deferredPrompt = null;
@@ -462,7 +464,7 @@ $categories = [
     btn.textContent = '✅ Đã copy!';
     setTimeout(() => btn.textContent = 'Copy Link', 1500);
   }
-  function doopy(link) {
+  function doCopy(link) {
     navigator.clipboard.writeText(link).catch(() => {});
   }
   function closeModal() {
