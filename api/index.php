@@ -10,8 +10,7 @@ $categories = [
         'icon' => '📺',
         'title' => 'TRUYỀN HÌNH - ⚽ ĐÁ BANH',
         'apps' => [
-            ['abbr' => 'GE', 'color' => 'gold', 'name' => 'GetOut', 'ver' => 'v2.0', 'tag' => 'Miễn phí', 'sub' => 'Ứng dụng xem bóng đá miễn phí', 'code' => '3074016', 'link' => $r2.'Get_Out_2.0.apk
-                '],
+            ['abbr' => 'GE', 'color' => 'gold', 'name' => 'GetOut', 'ver' => 'v2.0', 'tag' => 'Miễn phí', 'sub' => 'Ứng dụng xem bóng đá miễn phí', 'code' => '3074016', 'link' => $r2.'Get_Out_2.0.apk'],
             ['abbr' => 'SP', 'color' => 'green', 'name' => 'SportsTV_5.2.3.apk', 'ver' => 'v5.2.3', 'tag' => 'Miễn phí', 'sub' => 'SportsTV – xem thể thao IPTV', 'code' => '8773122', 'link' => $r2.'SportsTV_5.2.3.apk'],
             ['abbr' => 'SP', 'color' => 'green', 'name' => 'SportzX_2.1v', 'ver' => 'v2.1', 'tag' => 'Miễn phí', 'sub' => 'SportzX – xem thể thao trực tiếp', 'code' => '4652958', 'link' => $r2.'SportzX_2.1v.apk'],
             ['abbr' => 'CO', 'color' => 'teal', 'name' => 'CoTiViV1.1.7', 'ver' => 'v1.1.7', 'tag' => 'Miễn phí', 'sub' => 'Ứng dụng xem truyền hình cáp', 'code' => '3897591', 'link' => $r2.'Co_Tivi_1.1.7.apk'],
@@ -975,25 +974,28 @@ $categories = [
             badge.textContent = '✅ Đã copy!';
             setTimeout(() => badge.textContent = orig, 1500);
         }
-        function copyLink(name, link) {
-            document.getElementById('modalAppName').textContent = name;
-            document.getElementById('modalLink').value = link;
-            document.getElementById('copyModal').classList.add('open');
-            setTimeout(() => {
-                document.getElementById('modalLink').select(); docopy(link);
-            }, 50);
-        }
-        function doCopy() {
-            const input = document.getElementById('modalLink');
-            input.select();
-            navigator.clipboard.writeText(input.value).catch(() => document.execCommand('copy'));
-            const btn = document.querySelector('.copy-btn-copy');
-            btn.textContent = '✅ Đã copy!';
-            setTimeout(() => btn.textContent = 'Copy Link', 1500);
-        }
-        function doCopy(link) {
-            navigator.clipboard.writeText(link).catch(() => {});
-        }
+  function copyLink(name, link) {
+    document.getElementById('modalAppName').textContent = name;
+    document.getElementById('modalLink').value = link;
+    document.getElementById('copyModal').classList.add('open');
+    // Sửa chữ docopy thành silentCopy
+    setTimeout(() => { document.getElementById('modalLink').select(); silentCopy(link); }, 50);
+  }
+
+  function doCopy() {
+    const input = document.getElementById('modalLink');
+    input.select();
+    navigator.clipboard.writeText(input.value).catch(() => document.execCommand('copy'));
+    const btn = document.querySelector('.copy-btn-copy');
+    btn.textContent = '✅ Đã copy!';
+    setTimeout(() => btn.textContent = 'Copy Link', 1500);
+  }
+
+  // Đổi tên hàm này để không bị trùng lặp với hàm doCopy() ở trên
+  function silentCopy(link) {
+    navigator.clipboard.writeText(link).catch(() => {});
+  }
+
         function closeModal() {
             document.getElementById('copyModal').classList.remove('open');
             document.querySelector('.copy-btn-copy').textContent = 'Copy Link';
@@ -1016,17 +1018,21 @@ $categories = [
     </script>
     <script>
         (function() {
+            var UPSTASH_URL   = 'https://enabling-hound-152594.upstash.io';
+            var UPSTASH_TOKEN = 'gQAAAAAAAlQSAAIgcDFkOThiY2RlOTAzMTk0YjZiOWFkMjU5ZWU4YzY1YTUyMg';
+            var TIMEOUT       = 60;
+
             function safeGet(k, d) {
-                try {
-                    return localStorage.getItem(k) || d;
-                } catch(e) {
-                    return d;
-                }
+                try { return localStorage.getItem(k) || d; } catch(e) { return d; }
             }
             function safeSet(k, v) {
-                try {
-                    localStorage.setItem(k, v);
-                } catch(e) {}
+                try { localStorage.setItem(k, v); } catch(e) {}
+            }
+
+            function upstash(cmd) {
+                return fetch(UPSTASH_URL + '/' + cmd.map(encodeURIComponent).join('/'), {
+                    headers: { 'Authorization': 'Bearer ' + UPSTASH_TOKEN }
+                }).then(function(r) { return r.json(); });
             }
 
             function render(count) {
@@ -1039,33 +1045,45 @@ $categories = [
                 }
             }
 
-            function update() {
-                var now = Date.now();
-                var last = parseInt(safeGet('last_online_ping', '0'), 10);
-                var cached = safeGet('website_online_count');
-                if (cached) render(cached);
-                if (now - last >= 30000) {
-                    safeSet('last_online_ping', now.toString());
-                    fetch('/api/online_count.php?t=' + now)
-                    .then(function(r) {
-                        if (!r.ok) throw 0; return r.json();
-                    })
-                    .then(function(d) {
-                        if (d && d.count !== undefined) {
-                            safeSet('website_online_count', d.count.toString());
-                            render(d.count);
-                        }
-                    })
-                    .catch(function() {
-                        safeSet('last_online_ping', '0');
-                    });
+            function getSid() {
+                var sid = safeGet('_ol_sid', '');
+                if (!sid) {
+                    sid = 'ol:' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+                    safeSet('_ol_sid', sid);
                 }
+                return sid;
             }
 
-            window.addEventListener('storage',
-                function(e) {
-                    if (e.key === 'website_online_count') render(e.newValue);
+            function update() {
+                var now    = Date.now();
+                var last   = parseInt(safeGet('last_online_ping', '0'), 10);
+                var cached = safeGet('website_online_count');
+                if (cached) render(cached);
+                if (now - last < 30000) return;
+                safeSet('last_online_ping', now.toString());
+
+                var sid = getSid();
+                // Ping: đánh dấu user đang online
+                upstash(['SETEX', sid, String(TIMEOUT), '1'])
+                .then(function() {
+                    // Đếm số key ol:* đang active
+                    return upstash(['SCAN', '0', 'MATCH', 'ol:*', 'COUNT', '1000']);
+                })
+                .then(function(data) {
+                    var count = (data && data.result && Array.isArray(data.result[1]))
+                        ? data.result[1].length : 1;
+                    count = Math.max(1, count);
+                    safeSet('website_online_count', count.toString());
+                    render(count);
+                })
+                .catch(function() {
+                    safeSet('last_online_ping', '0');
                 });
+            }
+
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'website_online_count') render(e.newValue);
+            });
 
             function init() {
                 update();
