@@ -1,8 +1,9 @@
 const CACHE = 'tinhlagi-v1';
 
 self.addEventListener('install', (e) => {
+  // Chỉ cache '/' thôi, không cache '/index.php' vì Vercel route PHP qua '/'
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(['/', '/index.php']))
+    caches.open(CACHE).then(c => c.addAll(['/']))
   );
   self.skipWaiting();
 });

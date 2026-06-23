@@ -3,6 +3,7 @@
   "short_name": "TINHLAGI",
   "description": "Tổng hợp phần mềm cho Tivi/Box Android",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#f0f2f7",
   "theme_color": "#1a73e8",
